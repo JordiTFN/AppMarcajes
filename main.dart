@@ -33,15 +33,18 @@ class _HomepageState extends State<Homepage> {
       labelStyle: TextStyle(color: Colors.white),
       hintStyle: TextStyle(color: Colors.white.withAlpha(125)),
       enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25), borderSide: BorderSide(color: Colors.white)),
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide(color: Colors.white)),
       labelText: "Número de empleado",
       hintText: "Ejemplo: 12345",
       suffixIcon: Icon(Icons.person, color: Colors.white),
       fillColor: Colors.white,
       border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25), borderSide: BorderSide(color: Colors.white)),
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide(color: Colors.white)),
       focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25), borderSide: BorderSide(color: Colors.white)),
+          borderRadius: BorderRadius.circular(25),
+          borderSide: BorderSide(color: Colors.white)),
     ),
     onChanged: (val) {
       print("Code length: ${_codeController.text.length.toString()}");
@@ -54,21 +57,20 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     void sendData(String option) async {
-      if (misc.codeDict[_codeController.text] != null) {
-        final channel = IOWebSocketChannel.connect("ws://213.97.150.47:9800"); //IP PÚBLICA A SERVIDOR TFN
-        //final channel = IOWebSocketChannel.connect("ws://192.168.1.15:9800"); //PC PERSONAL EN RED DE TFN
-        var ahora = DateTime.now();
-        var msg = json.encode({
-          'code': _codeController.text,
-          'date': '${ahora.day}.${ahora.month}.${ahora.year}',
-          'time': '${ahora.hour}:${ahora.minute}',
-          'option': option
-        });
-        channel.sink.add(msg.codeUnits);
-        channel.sink.close();
+      if (misc.codeDict[_codeController.text] != null){
+        //final channel = IOWebSocketChannel.connect("ws://213.97.150.47:9800"); IP PÚBLICA A SERVIDOR TFN
+        final channel = IOWebSocketChannel.connect("ws://192.168.1.15:9800"); //PC PERSONAL EN RED DE TFN
+      var ahora = DateTime.now();
+      var msg = json.encode({
+        'code': _codeController.text,
+        'date': '${ahora.day}.${ahora.month}.${ahora.year}',
+        'time': '${ahora.hour}:${ahora.minute}',
+        'option': option
+      });
+      channel.sink.add(msg.codeUnits);
+      channel.sink.close();
       }
       mostrarSnack(_codeController.text, option, context, _scaffoldKey);
-      sendToDrive(_codeController.text);
       _codeController.clear();
     }
 
@@ -76,7 +78,8 @@ class _HomepageState extends State<Homepage> {
       key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Registro Jornada Laboral", style: TextStyle(fontWeight: FontWeight.w800)),
+        title: Text("Registro Jornada Laboral",
+            style: TextStyle(fontWeight: FontWeight.w800)),
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
@@ -104,7 +107,10 @@ class _HomepageState extends State<Homepage> {
                       children: <Widget>[
                         Text(
                           "Tiempo de trabajo",
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
                         ),
                         Divider(
                           color: Colors.white,
@@ -119,7 +125,8 @@ class _HomepageState extends State<Homepage> {
                               onPressed: () => sendData("TRABAJO_ON"),
                               child: Text("Empezar"),
                               textColor: Colors.white,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25)),
                             ),
                             Icon(Icons.work, color: Colors.white, size: 50),
                             RaisedButton(
@@ -127,7 +134,8 @@ class _HomepageState extends State<Homepage> {
                               onPressed: () => sendData("TRABAJO_OFF"),
                               child: Text("Finalizar"),
                               textColor: Colors.white,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25)),
                             )
                           ],
                         )
@@ -140,7 +148,10 @@ class _HomepageState extends State<Homepage> {
                       children: <Widget>[
                         Text(
                           "Tiempo de comida",
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
                         ),
                         Divider(
                           color: Colors.white,
@@ -155,7 +166,8 @@ class _HomepageState extends State<Homepage> {
                               onPressed: () => sendData("COMIDA_ON"),
                               child: Text("Empezar"),
                               textColor: Colors.white,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25)),
                             ),
                             Icon(Icons.fastfood, color: Colors.white, size: 50),
                             RaisedButton(
@@ -163,7 +175,8 @@ class _HomepageState extends State<Homepage> {
                               onPressed: () => sendData("COMIDA_OFF"),
                               child: Text("Finalizar"),
                               textColor: Colors.white,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25)),
                             )
                           ],
                         )
@@ -178,7 +191,8 @@ class _HomepageState extends State<Homepage> {
   }
 }
 
-void mostrarSnack(String code, String option, BuildContext context, GlobalKey<ScaffoldState> scaKey) {
+void mostrarSnack(String code, String option, BuildContext context,
+    GlobalKey<ScaffoldState> scaKey) {
   SnackBar snack;
 
   if (misc.codeDict[code] == null) {
@@ -186,7 +200,8 @@ void mostrarSnack(String code, String option, BuildContext context, GlobalKey<Sc
       content: Center(
         child: Text(
           "¡CÓDIGO ERRONEO!",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
         ),
       ),
       duration: Duration(seconds: 2, milliseconds: 500),
@@ -213,7 +228,8 @@ void mostrarSnack(String code, String option, BuildContext context, GlobalKey<Sc
       content: Center(
         child: Text(
           texto,
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23),
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 23),
         ),
       ),
       duration: Duration(seconds: 2, milliseconds: 500),
@@ -222,40 +238,4 @@ void mostrarSnack(String code, String option, BuildContext context, GlobalKey<Sc
   }
 
   scaKey.currentState.showSnackBar(snack);
-}
-
-void sendToDrive(String code) {
-  String inputedCode = code;
-  DateTime ahora = DateTime.now();
-  String registroFinal = getRegistro(inputedCode);
-  misc.postRegister(registroFinal, ahora.month.toString(), ahora.year.toString());
-}
-
-String getRegistro(String code) {
-  //FORMATO: P010051yyyymmddhhmmssyyyymmddhhmmss000codig00
-  var fechaActual = DateTime.now();
-  String reg = "P010051";
-  for (int i = 0; i < 2; i++) {
-    reg += fechaActual.year.toString();
-    reg += fechaActual.month.toString().length > 1
-        ? fechaActual.month.toString()
-        : "0${fechaActual.month.toString()}";
-    reg +=
-        fechaActual.day.toString().length > 1 ? fechaActual.day.toString() : "0${fechaActual.day.toString()}";
-    reg += fechaActual.hour.toString().length > 1
-        ? fechaActual.hour.toString()
-        : "0${fechaActual.hour.toString()}";
-    reg += fechaActual.minute.toString().length > 1
-        ? fechaActual.minute.toString()
-        : "0${fechaActual.minute.toString()}";
-    reg += fechaActual.second.toString().length > 1
-        ? fechaActual.second.toString()
-        : "0${fechaActual.second.toString()}";
-  }
-  reg += "000";
-  reg += code;
-  reg += "00";
-  reg += "\n";
-
-  return reg;
 }
